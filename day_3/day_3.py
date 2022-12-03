@@ -1,7 +1,3 @@
-# split the item into compartments (half)
-# loop through both compartments and look for identical items
-# calculate priority of the item
-# sum all the priorities
 import numpy as np
 
 with open("input.txt", "r", newline = "\n") as f:
@@ -30,7 +26,25 @@ for item in file:
         if found_letter:
             break
 
-print(f"The total sum is {round(total_sum)}")
+print(f"The total sum is {round(total_sum)}") # 7795
 
+# Puzzle 2
+groups = []
+group_sum = 0
 
+group = 0
+while group != (len(file) / 3):
+    bag_1 = file[group * 3]
+    bag_2 = file[(group * 3) + 1]
+    bag_3 = file[(group * 3) + 2]
+
+    for letter in bag_1:
+        if (letter in bag_2) & (letter in bag_3):
+            groups.append(letter)
+            group_sum += letter_priority_map[letter]
+            break
     
+    group += 1
+
+print(f"The sum of the groups is {round(group_sum)}")
+
