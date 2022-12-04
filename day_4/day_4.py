@@ -38,7 +38,3 @@ for line in file:
                 break
 
 print(f"Number of any overlaps {overlaps}")
-
-
-
-
