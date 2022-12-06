@@ -12,16 +12,22 @@ def check_unique(input: str) -> bool:
             return False
 
     return True
-    
-indx = 0
-found_unique = False
 
-while not found_unique:
-    string = file[indx:indx+4]
-    if check_unique(string):
-        found_unique = True
-    else:
-        indx += 1
+def find_start_index(file: str, length: int) -> int:
+    indx = 0
+    found_unique = False
 
-print(f"Start of packet: {indx + 4}")
+    while not found_unique:
+        string = file[indx:indx + length]
+        if check_unique(string):
+           found_unique = True
+        else:
+            indx += 1
+
+    return indx + length
+
+print(f"Start of packet: {find_start_index(file, 4)}")
+
+# Puzzle 2
+print(f"Start of message: {find_start_index(file, 14)}")
 
