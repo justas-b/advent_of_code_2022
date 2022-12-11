@@ -1,4 +1,4 @@
-with open("input.txt", "r", newline="\n") as f:
+with open("test2.txt", "r", newline="\n") as f:
     file = f.read().splitlines()
 
 # Puzzle 1
@@ -57,3 +57,34 @@ for move in file:
             unique_visits.append(t_pos[-1])
 
 print(f"Number of unique visit is {len(unique_visits)}")
+
+# Puzzle 2
+prev = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], 
+        [0, 0], [0, 0]]
+cur = [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], 
+        [0, 0], [0, 0]]
+new_unique = []
+
+
+def move_rope(prev: list[list], h_pos: list) -> list[list]:
+    """Moves the new rope"""
+    new_rope = prev.copy()
+    new_rope[-1] = h_pos
+    
+    for i in range(2, 11):
+        new_rope[-i] = move_tail(prev[-i + 1], new_rope[-i + 1], prev[-i])
+    
+    return new_rope
+
+
+for move in file:
+    dir_step = move.split(" ")
+    for step in range(1, int(dir_step[1]) + 1):
+        new_head = move_head(dir_step[0], prev[-1])
+        cur = move_rope(prev, new_head)
+        prev = cur.copy()
+
+        if cur[0] not in new_unique:
+            new_unique.append(cur[0])
+
+print(len(new_unique))
