@@ -1,4 +1,6 @@
-with open("test.txt", "r", newline="\n") as f:
+import math
+
+with open("input.txt", "r", newline="\n") as f:
     file = f.read().splitlines()
 
 # Puzzle 1
@@ -36,32 +38,36 @@ def do_operation(operation: str, input: int) -> int:
 
     if op == "+":
         if operate_on == "old":
-            return round((output + input) / 3)
+            return math.floor((output + input) / 3)
         else:
-            return round((output + int(operate_on)) / 3)
+            return math.floor((output + int(operate_on)) / 3)
     elif op == "-":
         if operate_on == "old":
-            return round((output - input) / 3)
+            return math.floor((output - input) / 3)
         else:
-            return round((output - int(operate_on)) / 3)
+            return math.floor((output - int(operate_on)) / 3)
     elif op == "*":
         if operate_on == "old":
-            return round((output * input) / 3)
+            return math.floor((output * input) / 3)
         else:
-            return round((output * int(operate_on)) / 3)
+            return math.floor((output * int(operate_on)) / 3)
 
 
 def check_divisible(worry:int, by: int, true: int, false: int) -> int:
     """Checks whether worry level is divisible and what monkey it is thrown to"""
-    return true if (worry % 2 == 0) else false
+    return true if (worry % by == 0) else false
 
 
-for monkey in monkeys_items:
-    rules = monkey_rules[monkey]
-    for i, item in enumerate(monkeys_items[monkey]):
-        monkey_checks[monkey] += 1
-        monkeys_items[monkey].remove(item)
-        worry = do_operation(rules[0], int(item))
-        throw_to = check_divisible(worry, int(rules[1]), int(rules[2]), int(rules[3]))
+for i in range(20):
+    for monkey in monkeys_items:
+        rules = monkey_rules[monkey]
+        for item in list(monkeys_items[monkey]):
+            monkey_checks[monkey] += 1
+            monkeys_items[monkey].remove(item)
+            worry = do_operation(rules[0], int(item))
+            throw_to = check_divisible(worry, int(rules[1]), int(rules[2]), int(rules[3]))
+            monkeys_items[throw_to].append(worry)
 
-print(monkey_checks)
+checks = list(monkey_checks.values())
+checks.sort(reverse=True)
+print(f"Level of monkey business: {checks[0] * checks[1]}")
